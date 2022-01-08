@@ -7,7 +7,7 @@ from nltk.tokenize import word_tokenize
 
 from flask import Flask
 from flask import render_template, request, jsonify
-from plotly.graph_objs import Bar
+from plotly.graph_objs import Bar, Histogram
 import joblib
 from sqlalchemy import create_engine
 
@@ -30,6 +30,10 @@ def tokenize(text):
 engine = create_engine('sqlite:///DisasterResponse.db')
 df = pd.read_sql_table('DisasterResponse', engine)
 y = df.drop(['id', 'message', 'original', 'genre'], axis=1)
+# dataframe for graph 1
+data1 = y.sum().reset_index().sort_values(by=0, ascending=False)
+# dataframe for graph 2
+data2 = y.sum(axis=1)
 
 # load model
 model = joblib.load('rf_pipeline_tf.pkl')
@@ -40,28 +44,44 @@ model = joblib.load('rf_pipeline_tf.pkl')
 @app.route('/index')
 def index():
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = y.sum().tolist()
-    genre_names = y.columns.tolist()
+    category_counts = data1[0]
+    category_names = data1['index']
 
     # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
         {
             'data': [
                 Bar(
-                    x=genre_names,
-                    y=genre_counts
+                    x=category_names,
+                    y=category_counts
                 )
             ],
 
             'layout': {
-                'title': 'Distribution of Message Genres',
+                'title': 'Distribution of Message Categories',
                 'yaxis': {
                     'title': "Count"
                 },
                 'xaxis': {
-                    'title': "Genre"
+                    'title': "Categories"
+                }
+            }
+        },
+
+        {
+            'data':[
+                Histogram(
+                    x=data2
+                )
+            ],
+
+            'layout': {
+                'title': 'Number of Categories that One Message Is In',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Number of Categories"
                 }
             }
         }
@@ -76,7 +96,6 @@ def index():
 
 
 # web page that handles user query and displays model results
-y = y.drop(columns=['child_alone'], axis=1)
 @app.route('/go')
 def go():
     # save user input in query
