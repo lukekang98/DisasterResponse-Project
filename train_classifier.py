@@ -82,8 +82,6 @@ def display_results(y_test, y_pred):
 
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
-y_train = y_train.drop(columns=['child_alone'], axis=1)
-y_test = y_test.drop(columns=['child_alone'], axis=1)
 
 
 def rf_pipeline_tf():
@@ -215,4 +213,4 @@ def train_and_display(num):
     display_results(y_test, y_pred)
 
 
-train_and_display(4)
+train_and_display(1)
