@@ -14,7 +14,7 @@
 
 3. How to run the scripts:
 * For processing data and training models, simply run the process_data.py, where you would be required to input the path of your data files. Then run the train_classifier.py.
-* For the web app, simply run the run.py, as you make sure that the templates file folder is reachable.
+* For the web app, simply run the run.py, where you would be required to input the path of your model file. And you need to make sure that the templates file folder is reachable.
 
 
 4. Libraries used:
