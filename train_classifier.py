@@ -3,10 +3,7 @@ import nltk
 nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger', 'stopwords'])
 
 import pandas as pd
-import numpy as np
-from sqlalchemy import create_engine
 
-import re
 from nltk.tokenize import word_tokenize
 from nltk.tokenize import sent_tokenize
 from nltk.stem import WordNetLemmatizer

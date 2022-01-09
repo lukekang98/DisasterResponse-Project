@@ -11,6 +11,8 @@ from plotly.graph_objs import Bar, Histogram
 import joblib
 from sqlalchemy import create_engine
 
+
+
 app = Flask(__name__)
 
 
@@ -36,7 +38,17 @@ data1 = y.sum().reset_index().sort_values(by=0, ascending=False)
 data2 = y.sum(axis=1)
 
 # load model
-model = joblib.load('rf_pipeline_tf.pkl')
+print('Please enter the path of the model:')
+while True:
+    try:
+        model_name = input()
+        model = joblib.load(model_name)
+        print('Successfully load in the model!')
+        break
+    except:
+        print("File doesn't exist, please enter again:")
+
+
 
 
 # index webpage displays cool visuals and receives user input text for model
